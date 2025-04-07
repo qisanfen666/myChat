@@ -5,6 +5,8 @@ import messageList from './components/messageList.vue'
 import disConnect from './components/disConnect.vue'
 import connect from './components/connect.vue'
 import joinRoom from './components/joinRoom.vue'
+import userLogin from './components/userLogin.vue'
+import userRegister from './components/userRegister.vue'
 import { useStore } from 'vuex'
 
   export default defineComponent({
@@ -21,6 +23,8 @@ import { useStore } from 'vuex'
       disConnect,
       connect,
       joinRoom,
+      userLogin,
+      userRegister,
     }, 
     created(){
       this.$socket.on('connect',()=>{
@@ -41,9 +45,8 @@ import { useStore } from 'vuex'
     <h1>MyChat</h1>
   </header>
   <main>
-    <div class="container">
-
-    </div>
+    <userRegister></userRegister>
+    <userLogin></userLogin>
     <div class="container">
       <sendMessage></sendMessage>
     </div>

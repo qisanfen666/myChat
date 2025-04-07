@@ -1,6 +1,8 @@
 const koa = require('koa')
 const http = require('http')
 const cors = require('@koa/cors')
+const {bodyParser} = require('@koa/bodyparser')
+const userRouters = require('./routers/userRouters.cjs')
 const socketIo = require('socket.io')
 
 //http://localhost:5173
@@ -14,6 +16,10 @@ app.use(cors({
     exposeHeaders: ['X-Total-Count'],
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }))
+app.use(bodyParser())
+
+//挂载路由
+app.use(userRouters.routes()).use(userRouters.allowedMethods())
 
 const server = http.createServer(app.callback())
 
@@ -27,7 +33,6 @@ const io = socketIo(server,{
 })
 
 io.on('connection',socket=>{
-    console.log("http://localhost:5173")
     const userId = socket.handshake.auth.userId  //获取用户id
     socket.userId = userId  //将用户id存储在socket对象中
     console.log(`User connected:${socket.userId}`)
@@ -49,7 +54,7 @@ io.on('connection',socket=>{
         }
         socket.join(room)
         console.log(`User ${socket.userId} joined room ${room}`)
-        socket.to(room).emit('joinRoom',room,socket.userId)  
+        io.to(room).emit('joinRoom',room,socket.userId)  
     })
 
     socket.on('leaveRoom',()=>{
@@ -66,5 +71,6 @@ io.on('connection',socket=>{
 
 server.listen(port,hostname,()=>{
     console.log(`Server running at http://${hostname}:${port}/`)
+    console.log("PageURL: http://localhost:5173")
 })
 
