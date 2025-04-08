@@ -3,8 +3,19 @@ import io from 'socket.io-client'
 import axios from 'axios'
 import {createApp} from 'vue'
 import store from './store'
+//import { config } from '../server/utils/db.cjs'
 
 axios.defaults.baseURL = 'http://localhost:3000'
+
+axios.interceptors.request.use((config)=>{
+    if(store.state.token){
+        config.headers.Authorization = `Bearer ${store.state.token}`
+    }
+    return config
+},error=>{
+    return Promise.reject(error)
+
+})
 
 const app = createApp(App)
 
@@ -14,6 +25,13 @@ const socket = io('http://localhost:3000',{
     transports: ['websocket'],
     autoConnect: false,
 })
+
+const token = localStorage.getItem('token'); // 从 localStorage 获取 token
+if (token) {
+    socket.auth = { authorization: `Bearer ${token}` }; // 设置认证信息
+} else {
+    console.error('No token found in localStorage');
+}
 
 app.config.globalProperties.$socket = socket
 

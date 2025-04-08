@@ -1,8 +1,15 @@
 <script>
-import axios from 'axios'
-import {defineComponent} from 'vue'
+import { useStore } from 'vuex'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
+    name:'userLogin',
+    setup(){
+        const store = useStore()
+        return {
+            store
+        }
+    },
     data(){
         return {
             username:'',
@@ -11,16 +18,10 @@ export default defineComponent({
     },
     methods:{
         async userLogin(){
-           try{
-            const response = await axios.post('/user/login',{
-                username:this.username,
-                password:this.password
-            })
-            alert(response.data.message)
-           }
-           catch(error){
-            alert(error.response.data.message)
-           }
+           await this.store.dispatch('login',{
+               username:this.username,
+               password:this.password
+           })
         },
     },
 });

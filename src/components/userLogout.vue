@@ -3,7 +3,7 @@ import {useStore} from 'vuex'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name:'disConnect',
+    name:'userLogout',
     setup(){
         const store = useStore()
         return {
@@ -11,17 +11,16 @@ export default defineComponent({
         }
     },
     methods:{
-        disConnect(){   
-            this.$socket.disconnect()
-            this.store.dispatch('disConnected')
-        }   
+        logout(){
+            this.store.dispatch('logout')
+        }
     }
 })
 
 </script>
 
 <template>
-    <div class="disConnect">
-        <button @click="disConnect">disConnect</button>
+    <div class="logout">
+        <button @click="logout">Log out</button>
     </div>
 </template>

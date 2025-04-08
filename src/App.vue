@@ -2,8 +2,7 @@
 import { defineComponent } from 'vue'
 import sendMessage from './components/sendMessage.vue'
 import messageList from './components/messageList.vue'
-import disConnect from './components/disConnect.vue'
-import connect from './components/connect.vue'
+import userLogout from './components/userLogout.vue'
 import joinRoom from './components/joinRoom.vue'
 import userLogin from './components/userLogin.vue'
 import userRegister from './components/userRegister.vue'
@@ -20,18 +19,15 @@ import { useStore } from 'vuex'
     components:{
       messageList,
       sendMessage,
-      disConnect,
-      connect,
       joinRoom,
       userLogin,
       userRegister,
+      userLogout,
     }, 
     created(){
       this.$socket.on('connect',()=>{
         console.log('connected')
-      })
-      //默认加入房间
-      this.$socket.emit('joinRoom', 'Hall')
+      })    
     },
     destroyed(){
       console.log('disconnected')
@@ -58,7 +54,7 @@ import { useStore } from 'vuex'
       <messageList></messageList>
     </div>
     <div class="options">
-      <connect></connect><span></span><disConnect></disConnect>
+      <userLogout></userLogout>
     </div>
   </main>
   <footer>

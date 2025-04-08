@@ -1,30 +1,29 @@
 import {createStore} from 'vuex'
 import io from 'socket.io-client'
+import axios from 'axios'
 
 const socket = io('http://localhost:3000')
 
 const store = createStore({
     state:{
         socketConnected:false,
-        socketId:null,
+        curRoomUserCount:0,
         rooms:[],
         messages:[],
         curRoom:'Hall',
+        user:null,
+        token:null,
     },
 
     mutations:{
         socketConnected(state){
             state.socketConnected = true
-            console.log(`${state.socketId} connected`)
         },
         socketDisConnected(state){
             state.socketConnected = false
         },
-        setId(state,id){
-            state.socketId = id
-        },
-        setRooms(state,room){
-            state.rooms.push(room)
+        setRoomUsers(state,roomUsers){
+            state.curRoomUserCount = roomUsers
         },
         setMessages(state,message){
             if(state.messages.push(message)){
@@ -36,30 +35,90 @@ const store = createStore({
         setCurRoom(state,curRoom){
             state.curRoom = curRoom
         },
+        setToken(state,token){
+            state.token = token
+        },
+        setUser(state,user){
+            state.user = user
+        },
+        clearUser(state){
+            state.user = null
+            state.token = null
+        },
     },
     //actions由前端组件调用
     //socket.emit()用于向服务器发送消息
     actions: {
-        joinRoom({commit},room){
+        async login({commit,state},{username,password}){
+            try{
+                const response = await axios.post('/user/login',{username,password})
+                if(response.data.token){
+                    const token = response.data.token
+                    const user = {
+                        username:username,
+                        password:password,
+                    }
+                    localStorage.setItem('token',token)
+                    commit('setUser',user)
+                    commit('setToken',token)
+                    commit('setCurRoom','Hall')
+                    socket.auth = {authorization: `Bearer ${token}`}
+                    socket.connect()
+                    alert('login success')
+                    console.log(`${state.user.username} login`)
+                }
+            }
+            catch(error){
+                console.error('Login error:', error.response?.data || error.message);
+                alert(error.response?.data?.message || 'Login failed');
+            }
+        },
+        logout({commit}){
+            console.log(`${state.username} logout`)
+            socket.disconnect()
+            localStorage.removeItem('token')
+            commit('clearUser')
+            alert('log out success')
+            
+        },
+        joinRoom({commit,state},room){
             if(!room||room.trim()==''){
                 console.log('room name is empty')
                 return
             }
+            if(state.curRoom){
+                socket.emit('leaveRoom',state.curRoom)
+                console.log(`Left room:${state.curRoom}`)
+            }
+
             socket.emit('joinRoom',room,()=>{
-                console.log('join room success')
+                console.log(`Joined room:${room}`)
             })
+
             commit('setCurRoom',room)
-            commit('setRooms',room)
         },
-        leaveRoom({commit},room){
-            socket.emit('leaveRoom',room)
-            commit('setCurRoom',null)
-        },
-        setId({commit},id){
-            commit('setId',id)
+        leaveRoom({commit,state}){
+            socket.emit('leaveRoom',state.curRoom)
+            console.log(`Left room:${state.curRoom}`)
+            commit('setCurRoom','Hall')
         },
         sendMessage({state},msg){
-            socket.emit('sendMessage',msg,state.curRoom)
+            if(!state.user){
+                alert('Please login first')
+                return
+            }
+            if(!msg||msg.trim()==''){
+                alert('message is empty')
+                return 
+            }
+            const message = {
+                text:msg,
+                curRoom:state.curRoom,
+                user:state.user.username,
+                timestamp:new Date().toLocaleString()
+            }
+
+            socket.emit('sendMessage',message)
         },
         socketConnected({commit}){
             commit('socketConnected',true)
@@ -82,13 +141,8 @@ socket.on('disConnect',()=>{
     store.commit('setId',null)
 })
 
-socket.on('setId',(id)=>{
-    store.commit('setId',id)
-})
-
 socket.on('joinRoom',(room)=>{
     store.commit('joinRoom',room)
-    store.commit('setRooms',room)
 })
 
 socket.on('leaveRoom',()=>{

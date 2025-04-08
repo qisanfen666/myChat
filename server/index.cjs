@@ -4,6 +4,8 @@ const cors = require('@koa/cors')
 const {bodyParser} = require('@koa/bodyparser')
 const userRouters = require('./routers/userRouters.cjs')
 const socketIo = require('socket.io')
+const jwt = require('jsonwebtoken')
+const SECRET_KEY = 'mySecretKey@123'
 
 //http://localhost:5173
 let hostname= '127.0.0.1'
@@ -19,6 +21,7 @@ app.use(cors({
 app.use(bodyParser())
 
 //挂载路由
+//allowedMethods是允许客户端发送请求的方法，这里设置为GET和POST
 app.use(userRouters.routes()).use(userRouters.allowedMethods())
 
 const server = http.createServer(app.callback())
@@ -33,18 +36,51 @@ const io = socketIo(server,{
 })
 
 io.on('connection',socket=>{
-    const userId = socket.handshake.auth.userId  //获取用户id
-    socket.userId = userId  //将用户id存储在socket对象中
-    console.log(`User connected:${socket.userId}`)
+    //token验证
+    const authHeader = socket.handshake.auth.authorization
+    if(!authHeader){
+        socket.disconnect()
+        return
+    }
+    else{
+        console.log('Token is valid')
+    }
+
+    const token = authHeader.split(' ')[1]; // 提取 Bearer 后的实际 token
+    if (!token) {
+        console.error('Invalid token format');
+        socket.disconnect();
+        return;
+    }
+
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY)
+        socket.userId = decoded.username
+        console.log(`User connected: ${socket.userId}`)
+    } catch (error) {
+        console.error('Invalid token:', error)
+        socket.disconnect()
+        return
+    }
 
     socket.on('disconnect',()=>{
         console.log(`User disconnected:${socket.userId}`)
-        socket.emit('disConnect')  //向客户端发送断开连接的消息
     })
 
     socket.on('sendMessage',(msg)=>{
-        console.log(`${socket.userId} send ${msg.text} to ${msg.curRoom}`)
-        io.to(msg.curRoom).emit('sendMessage',msg)  
+        if (!socket.userId) {
+            console.error('Unauthorized user tried to send a message');
+            socket.emit('error', { message: 'Unauthorized' });
+            return;
+        }
+
+        if(!msg.curRoom || !msg.text){
+            console.error('Invalid message format')
+            return
+        }
+
+        console.log(`${socket.userId} sent message: ${msg.text} in room ${msg.curRoom}`)
+        io.to(msg.curRoom).emit('sendMessage',msg)
     })
 
     socket.on('joinRoom',room=>{
@@ -54,12 +90,28 @@ io.on('connection',socket=>{
         }
         socket.join(room)
         console.log(`User ${socket.userId} joined room ${room}`)
-        io.to(room).emit('joinRoom',room,socket.userId)  
+
+        const usersInRoom = Array.from(io.sockets.adapter.rooms.get(room) || []).map(
+            (socketId) => io.sockets.sockets.get(socketId).userId
+        )
+
+        io.to(room).emit('roomUsers',{room,users:usersInRoom})
     })
 
-    socket.on('leaveRoom',()=>{
+    socket.on('leaveRoom',(room)=>{
+        if(!room){
+            console.error('Room name is required')
+            return
+        }
+        
+        socket.leave(room)
         console.log(`User ${socket.userId} left room ${room}`)
-        socket.to(room).emit('leaveRoom')
+
+        const usersInRoom = Array.from(io.sockets.adapter.rooms.get(room) || []).map(
+            (socketId) => io.sockets.sockets.get(socketId).userId
+        )
+
+        io.to(room).emit('leaveRoom',room,socket.userId,usersInRoom)
     })
 
     socket.on('error',error=>{

@@ -1,5 +1,5 @@
 <script>
-import {useStore} from 'vuex'
+import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { defineComponent } from 'vue'
 
@@ -34,11 +34,12 @@ export default defineComponent({
 
 <template>
     <button @click="test">test</button>
-    <div>{{ curRoom }}</div>
+    <div>Room : {{ curRoom }}</div>
     <br>
     <ul class="messageList">
-        <li v-for="message in messages">
-            {{ message.curRoom }} : {{ message.text }}
+        <li v-for="(message, index) in messages" :key="index">
+            {{ message.user }} : {{ message.text }}
+            <span>{{ message.timestamp }}</span>
         </li>
     </ul>
 </template> 
