@@ -18,14 +18,15 @@ $font-weight: 400;
   
 // 左侧登录和注册部分
 .left-panel {
-    flex: 1; // 占据左侧一半
+    flex: 0.75; // 占据左侧一半
     background-color: #f0f0f0;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 
 .form {
     width: 80%; // 表单宽度
@@ -50,12 +51,27 @@ $font-weight: 400;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items:flex-start;
 }
 
 .message-box {
-    flex: 1;
+    flex: none;
+    height: 300px; // 设置消息框的高度
+    width: 80%; // 设置消息框的宽度
     overflow-y: auto; // 滚动条
-    margin-bottom: 20px;
+    margin-bottom: 20px; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    
+}
+
+.chat-container {
+    flex:0.8; // 让聊天区域占据剩余空间
+    display: flex;
+    flex-direction: column;
+    gap:10px; // 消息之间的间距
 }
 
 .send-message {
@@ -87,15 +103,15 @@ $font-weight: 400;
 // 右下角按钮容器
 .button-container {
     position: relative;
-    bottom: -10px;
-    left: 40px;
+    bottom: 0px;
+    left: 55px;
     display: flex;
     overflow:hidden;
     gap: 10px; // 按钮之间的间距
 }
 
 .button-container button {
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: $primary-color;
     color: #fff;
     border: none;

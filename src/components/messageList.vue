@@ -21,24 +21,17 @@ export default defineComponent({
         }
     },
     methods: {
-        test() {
-            for(let i=0;i<this.messages.length;i++){
-                console.log(this.messages[i])
-            }
-            console.log(this.messages)
-            console.log(`curroom is ${this.curRoom}`)
-        },
+
     },
 })
 </script>
 
 <template>
     <div>Room : {{ curRoom }}</div>
-    <br>
     <ul class="messagelist">
-        <li v-for="(message, index) in messages" :key="index">
+        <li v-for="(message, index) in messages" :key="index" v-if="message.curRoom === curRoom.value">
             {{ message.user }} : {{ message.text }}
-            <span>{{ message.timestamp }}</span>
+            <span>({{ message.timestamp }})</span>
         </li>
     </ul>
 </template> 

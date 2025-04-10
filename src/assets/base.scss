@@ -20,7 +20,7 @@ $font-weight: 400;
   max-width: 1200px;
   margin: 0 auto;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   background-color: #f8f8f8;
   font-family: $font-family;
   border-radius: 5px;
@@ -30,7 +30,8 @@ $font-weight: 400;
 //头部样式
 .header{
     align-items: center;
-    margin: 20px 0;
+    text-align: center;
+    margin: 20px 30px;
     font-size: 20px;
     border-width: 1px;
     border-color:black;
@@ -39,10 +40,16 @@ $font-weight: 400;
 
 input {
     width: 100%;
-    padding: 10px;
+    padding: 5px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+}
+
+span{
+    //字体颜色
+    color:gray;
+    font-size : 10px;
 }
 

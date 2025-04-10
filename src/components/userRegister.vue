@@ -12,6 +12,10 @@ export default defineComponent({
     },
     methods:{
         async userRegister(){
+            if(this.username.trim() === '' || this.password.trim() === '' || this._password.trim() === ''){
+                alert('用户名或密码不能为空')
+                return
+            }
             try{
                 if(this.password==this._password){
                     const response = await axios.post('/user/register',{
@@ -19,6 +23,9 @@ export default defineComponent({
                     password:this.password
                 })
                 alert(response.data.message)
+                this.username = ''
+                this.password = ''
+                this._password = ''
                 }
                 else{
                     alert('两次密码不一致')

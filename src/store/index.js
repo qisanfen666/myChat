@@ -25,9 +25,13 @@ const store = createStore({
         setRoomUsers(state,roomUsers){
             state.curRoomUserCount = roomUsers
         },
-        setMessages(state,message){
-            if(state.messages.push(message)){
-                console.log("OKOKOk")
+        setMessages(state,messages){
+            if(messages.length==0){
+                state.messages = []
+                return
+            }
+            if(Array.isArray(messages)){
+                state.messages = messages
             }
             //console.log(message.text)
             //console.log(state.messages)
@@ -73,15 +77,14 @@ const store = createStore({
                 alert(error.response?.data?.message || 'Login failed');
             }
         },
-        logout({commit}){
-            console.log(`${state.username} logout`)
+        logout({commit,state}){
+            console.log(`${state.user.username} logout`)
             socket.disconnect()
             localStorage.removeItem('token')
             commit('clearUser')
             alert('log out success')
-            
         },
-        joinRoom({commit,state},room){
+        async joinRoom({commit,state},room){
             if(!room||room.trim()==''){
                 console.log('room name is empty')
                 return
@@ -91,16 +94,20 @@ const store = createStore({
                 console.log(`Left room:${state.curRoom}`)
             }
 
-            socket.emit('joinRoom',room,()=>{
-                console.log(`Joined room:${room}`)
+            socket.emit('joinRoom',room,async ()=>{
+                console.log(`Joined room:${room}`)    
             })
 
+            const response = await axios.get(`/messages/${room}`)
+            //console.log(response.data.messages)
             commit('setCurRoom',room)
+            commit('setMessages',response.data.messages)        
         },
         leaveRoom({commit,state}){
             socket.emit('leaveRoom',state.curRoom)
             console.log(`Left room:${state.curRoom}`)
             commit('setCurRoom','Hall')
+            commit('setMessages',[])
         },
         sendMessage({state},msg){
             if(!state.user){
@@ -117,6 +124,8 @@ const store = createStore({
                 user:state.user.username,
                 timestamp:new Date().toLocaleString()
             }
+
+            axios.post(`/messages`,message)
 
             socket.emit('sendMessage',message)
         },

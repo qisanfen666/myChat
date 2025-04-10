@@ -13,18 +13,24 @@ export default defineComponent({
     data(){
         return {
             username:'',
-            password:''
+            password:'',
+            flag:false
         }
     },
     methods:{
-        async userLogin(){
-           await this.store.dispatch('login',{
+        userLogin(){
+           this.store.dispatch('login',{
                username:this.username,
-               password:this.password
+               password:this.password,   
            })
+           this.flag=true
         },
         logout(){
             this.store.dispatch('logout')
+            this.flag=false
+            this.username='',
+            this.password='',
+            this.store.dispatch('leaveRoom')
         },
     },
 });
@@ -38,7 +44,8 @@ export default defineComponent({
         <input type="password" v-model="password" placeholder="password" />
         <br>
         <div class="button-container">
-            <button @click="userLogin">Confirm</button>
+            <button @click="userLogin" v-if="!flag">Confirm</button>
+            <button @click="logout" v-else>log out</button>
         </div>
     </div>
 </template>

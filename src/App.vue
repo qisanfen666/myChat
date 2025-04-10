@@ -6,7 +6,6 @@ import userLogout from './components/userLogout.vue'
 import joinRoom from './components/joinRoom.vue'
 import userLogin from './components/userLogin.vue'
 import userRegister from './components/userRegister.vue'
-import leaveRoom from './components/leaveRoom.vue'
 import { useStore } from 'vuex'
 
   export default defineComponent({
@@ -21,7 +20,6 @@ import { useStore } from 'vuex'
       messageList,
       sendMessage,
       joinRoom,
-      leaveRoom,
       userLogin,
       userRegister,
       userLogout,
@@ -41,24 +39,27 @@ import { useStore } from 'vuex'
 <div id="app" class="page">
   <!--左侧-->
   <div class="left-panel">
-    <userRegister></userRegister>
+    <div class="container">
+      <userRegister></userRegister>
+    </div>
     <br>
-    <userLogin></userLogin>
+    <div class="container">
+      <userLogin></userLogin>
+    </div>
+    <br>
+    <div class="container">
+      <joinRoom></joinRoom>
+    </div>
   </div>
 
   <!--右侧-->
   <div class="right-panel">
-    <div class="container">
-      <joinRoom></joinRoom>
+    <h2 class="head">Chat Room</h2>
+    <div class="message-box chat-container">
+      <messageList></messageList>
     </div>
-    <div class="container">
-      <h2 class="head">Chat Room</h2>
-      <div class="message-box">
-        <messageList></messageList>
-      </div>
-      <div class="send-message">
-        <sendMessage></sendMessage>
-      </div>
+    <div class="send-message">
+      <sendMessage></sendMessage>
     </div>
   </div>
 </div>
