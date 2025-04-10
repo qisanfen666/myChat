@@ -34,8 +34,12 @@ export default defineComponent ({
 </script>
 
 <template>
-  <div class="send-message">
+  <div class="container">
     <input type="text" v-model="message" placeholder="Type your message here..." />
-    <button @click="sendMessage">Send Message</button>
+    <br>
+    <div class="button-container">
+      <button @click="sendMessage">Send Message</button>
+    </div>
   </div>
 </template>
+

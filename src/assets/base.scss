@@ -1,0 +1,48 @@
+//主题颜色
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+
+//字体
+$font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-size: 16px;
+$line-height: 1.5;
+$font-weight: 400;
+
+//去除默认样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+//容器样式
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f8f8;
+  font-family: $font-family;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+//头部样式
+.header{
+    align-items: center;
+    margin: 20px 0;
+    font-size: 20px;
+    border-width: 1px;
+    border-color:black;
+    background-color: #efe3e3;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+

@@ -33,10 +33,9 @@ export default defineComponent({
 </script>
 
 <template>
-    <button @click="test">test</button>
     <div>Room : {{ curRoom }}</div>
     <br>
-    <ul class="messageList">
+    <ul class="messagelist">
         <li v-for="(message, index) in messages" :key="index">
             {{ message.user }} : {{ message.text }}
             <span>{{ message.timestamp }}</span>

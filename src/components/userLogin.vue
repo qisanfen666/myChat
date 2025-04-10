@@ -23,15 +23,23 @@ export default defineComponent({
                password:this.password
            })
         },
+        logout(){
+            this.store.dispatch('logout')
+        },
     },
 });
 </script>
 
 <template>
-    <div>
-        <h2 class="head">Login</h2>
+    <h2 class="header">Login</h2>
+    <div class="container">
         <input type="text" v-model="username" placeholder="username" />
+        <br>
         <input type="password" v-model="password" placeholder="password" />
-        <button @click="userLogin">Login</button>
+        <br>
+        <div class="button-container">
+            <button @click="userLogin">Confirm</button>
+        </div>
     </div>
 </template>
+

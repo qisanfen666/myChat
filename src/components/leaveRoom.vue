@@ -1,26 +1,28 @@
 <script>
-import {useStore} from 'vuex'
+import { useStore } from 'vuex'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name:'userLogout',
+    name:'leaveRoom',
+
     setup(){
-        const store = useStore()
+        const store =useStore()
         return {
             store
         }
     },
+
     methods:{
-        logout(){
-            this.store.dispatch('logout')
-        },
-    },
+        leaveRoom(){
+            store.commit('leaveRoom')
+        }
+    }
 })
 
 </script>
 
 <template>
     <div class="button-container">
-        <button @click="logout">Log out</button>
+        <button @click="leaveRoom">return</button>
     </div>
 </template>

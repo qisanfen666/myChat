@@ -6,6 +6,7 @@ import userLogout from './components/userLogout.vue'
 import joinRoom from './components/joinRoom.vue'
 import userLogin from './components/userLogin.vue'
 import userRegister from './components/userRegister.vue'
+import leaveRoom from './components/leaveRoom.vue'
 import { useStore } from 'vuex'
 
   export default defineComponent({
@@ -20,6 +21,7 @@ import { useStore } from 'vuex'
       messageList,
       sendMessage,
       joinRoom,
+      leaveRoom,
       userLogin,
       userRegister,
       userLogout,
@@ -36,28 +38,33 @@ import { useStore } from 'vuex'
 </script>
 
 <template>
-<div id="app">
-  <header>
-    <h1>MyChat</h1>
-  </header>
-  <main>
+<div id="app" class="page">
+  <!--左侧-->
+  <div class="left-panel">
     <userRegister></userRegister>
+    <br>
     <userLogin></userLogin>
-    <div class="container">
-      <sendMessage></sendMessage>
-    </div>
-    <span></span>
+  </div>
+
+  <!--右侧-->
+  <div class="right-panel">
     <div class="container">
       <joinRoom></joinRoom>
     </div>
     <div class="container">
-      <messageList></messageList>
+      <h2 class="head">Chat Room</h2>
+      <div class="message-box">
+        <messageList></messageList>
+      </div>
+      <div class="send-message">
+        <sendMessage></sendMessage>
+      </div>
     </div>
-    <div class="options">
-      <userLogout></userLogout>
-    </div>
-  </main>
-  <footer>
-  </footer>
+  </div>
 </div>
 </template>
+
+<style lang="scss">
+@import './assets/page.scss';
+@import './assets/base.scss';
+</style>
