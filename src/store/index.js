@@ -33,6 +33,12 @@ const store = createStore({
             if(Array.isArray(messages)){
                 state.messages = messages
             }
+            else{
+                //这个...语法是ES6的扩展运算符，用于展开数组或对象
+                //这里是将新的消息添加到现有的消息数组中
+                //创建一个新数组，包含现有的消息和新的消息，并赋值给state.messages
+                state.messages = [...state.messages, messages]; // 创建新数组，追加新消息
+            }
             //console.log(message.text)
             //console.log(state.messages)
         },
@@ -56,6 +62,11 @@ const store = createStore({
         async login({commit,state},{username,password}){
             try{
                 const response = await axios.post('/user/login',{username,password})
+                //如果用户不存在，返回400错误
+                if(response.status==400){
+                    alert('User does not exist')
+                    return
+                }
                 if(response.data.token){
                     const token = response.data.token
                     const user = {

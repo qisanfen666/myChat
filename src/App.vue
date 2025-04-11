@@ -16,6 +16,11 @@ import { useStore } from 'vuex'
         store 
       }
     },
+    data() {
+    return {
+      selectedOption: null // 当前选择的功能
+    }
+  },
     components:{
       messageList,
       sendMessage,
@@ -39,16 +44,29 @@ import { useStore } from 'vuex'
 <div id="app" class="page">
   <!--左侧-->
   <div class="left-panel">
-    <div class="container">
+    <div v-if="!selectedOption" class="container">
+      <h2 class="header">Options</h2>
+      <div class="options">
+        <button @click="selectedOption = 'register'">Register</button>
+        <button @click="selectedOption = 'login'">Login</button>
+        <button @click="selectedOption = 'joinRoom'">Join Room</button>
+      </div>
+    </div>
+    <div class="container" v-show="selectedOption === 'register'">
       <userRegister></userRegister>
+      <div>
+        <button @click="selectedOption = null">Back</button>
+      </div>
     </div>
     <br>
-    <div class="container">
+    <div class="container" v-show="selectedOption === 'login'">
       <userLogin></userLogin>
+      <button @click="selectedOption = null">Back</button>
     </div>
     <br>
-    <div class="container">
+    <div class="container" v-show="selectedOption === 'joinRoom'">
       <joinRoom></joinRoom>
+      <button @click="selectedOption = null">Back</button>  
     </div>
   </div>
 

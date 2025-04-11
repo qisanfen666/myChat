@@ -14,7 +14,7 @@ const getMessagesByRoom =async (room)=>{
     const sql = 'SELECT * FROM messages WHERE room = ?;'
     try{
         const [rows] = await pool.query(sql,[room])
-        console.log(rows)
+        //console.log(rows)
         return rows
     }
     catch(err){

@@ -18,7 +18,9 @@ $font-weight: 400;
 //容器样式
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  height: auto;
+  width:auto;
+  margin: 0px auto;
   align-items: center;
   padding: 10px;
   background-color: #f8f8f8;
@@ -49,7 +51,7 @@ input {
 
 span{
     //字体颜色
-    color:gray;
+    color:rgb(61, 234, 26);
     font-size : 10px;
 }
 

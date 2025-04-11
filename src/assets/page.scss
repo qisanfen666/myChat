@@ -18,8 +18,9 @@ $font-weight: 400;
   
 // 左侧登录和注册部分
 .left-panel {
-    flex: 0.75; // 占据左侧一半
+    flex: 0.5; // 占据左侧一半
     background-color: #f0f0f0;
+    overflow-y:auto;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -58,7 +59,7 @@ $font-weight: 400;
     flex: none;
     height: 300px; // 设置消息框的高度
     width: 80%; // 设置消息框的宽度
-    overflow-y: auto; // 滚动条
+   
     margin-bottom: 20px; 
     padding: 10px;
     border: 1px solid #ccc;
@@ -67,7 +68,8 @@ $font-weight: 400;
     
 }
 
-.chat-container {
+.chat-container { 
+    overflow-y: auto; // 滚动条
     flex:0.8; // 让聊天区域占据剩余空间
     display: flex;
     flex-direction: column;
@@ -122,3 +124,67 @@ $font-weight: 400;
 // .button-container button:hover {
 //     background-color: darken($primary-color, 10%);
 // }
+
+//选项样式,竖直排列,按钮的边框去除,饱满
+.options{
+    display: flex;
+    flex-direction: column;
+    gap: 10px; // 选项之间的间距
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 100%; // 设置选项框的宽度
+    max-width: 400px;
+    height: auto; // 设置选项框的高度
+    overflow-y: auto; // 滚动条
+    overflow-x: hidden; // 禁止横向滚动
+    margin-bottom: 20px;   
+}
+
+//聊天气泡样式
+.chat-bubble {
+    padding: 10px;
+    display:inline-block;
+    clear:both;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 80%; // 限制气泡的最大宽度
+    word-wrap: break-word; // 自动换行
+    word-break: break-all;
+    &.user {
+        background-color: #3498db;
+        color: #fff;
+        float: right;
+    }
+    &.bot {
+        background-color: #f0f0f0;
+        color: #000;
+        float: left;
+    }
+}
+
+.chat-bubble.user::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid #3498db;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+.chat-bubble.bot::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-right: 10px solid #f0f0f0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
