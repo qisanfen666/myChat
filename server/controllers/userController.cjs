@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const SECRET_KEY = 'mySecretKey@123'
-const {createUser,getUser} = require('../models/userModel.cjs')
+const {createUser,getUser,getUserRooms} = require('../models/userModel.cjs')
 
 const registerUser = (async ctx=>{
     const {username,password} = ctx.request.body
@@ -24,9 +24,10 @@ const registerUser = (async ctx=>{
 })
 
 const loginUser = (async ctx=>{
-    const {username,password} = ctx.request.body
+    const {username,password} = ctx.request.body 
     try{
         const user = await getUser(username)
+        const rooms = await getUserRooms(username)
 
         if(!user){
             ctx.status = 400
@@ -50,7 +51,8 @@ const loginUser = (async ctx=>{
 
         const token =jwt.sign({id:user.id,username:user.username},SECRET_KEY,{expiresIn:'1h'})
         ctx.status = 200
-        ctx.body = {message:'Login successful',token}
+        ctx.body = {message:'Login successful',token,rooms}
+        //console.log(rooms)
     }
     catch(err){
         console.log("error in loginUser",err)

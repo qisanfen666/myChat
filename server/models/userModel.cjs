@@ -26,7 +26,33 @@ const getUser = async (username)=>{
     }
 }
 
+
+const getUserRooms = async (username)=>{
+    try{
+        const sql1 = `SELECT room_id FROM user_rooms Where user_id = (SELECT id FROM users WHERE username= ?);`
+        const sql2 = `SELECT name FROM rooms WHERE id = ?;`
+
+        const [rows1] = await pool.query(sql1,[username])
+        console.log('rows1:',rows1)
+        /// 查询每个房间的名称
+        const roomNames = await Promise.all(
+            rows1.map(async (row) => {
+                const [roomRows] = await pool.query(sql2, [row.room_id]) // 使用 row.room_id
+                return roomRows[0]?.name // 返回房间名称
+            })
+        );
+        console.log('rows2:',roomNames)
+        return roomNames
+        
+    }
+    catch(err){
+        console.log('getUserRooms error : ',err)
+        throw err
+    }
+}
+
 module.exports = {
     createUser,
-    getUser
+    getUser,
+    getUserRooms,
 }

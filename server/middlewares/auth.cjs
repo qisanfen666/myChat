@@ -4,7 +4,13 @@ const SECRET_KEY = 'mySecretKey@123'
 const authenticate = (async (ctx, next)=>{
     const header =ctx.headers.authorization
     const token =header.split(' ')[1]
-    if(!header||!token){
+    if (!header) {
+        ctx.status = 401;
+        ctx.body = { message: 'Authorization header is required' };
+        return;
+    }
+
+    if(!token){
         ctx.status = 401
         ctx.body = {message:'Authorization token is required'}
         return
@@ -17,6 +23,7 @@ const authenticate = (async (ctx, next)=>{
     }
     catch(err){
         ctx.status = 401
+        console.error('Invalid token:', err)
         ctx.body = {message:'Invalid token'}
     }
 })

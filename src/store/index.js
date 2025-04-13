@@ -45,6 +45,9 @@ const store = createStore({
         setCurRoom(state,curRoom){
             state.curRoom = curRoom
         },
+        setRooms(state,rooms){
+            state.rooms = rooms
+        },
         setToken(state,token){
             state.token = token
         },
@@ -62,7 +65,6 @@ const store = createStore({
         async login({commit,state},{username,password}){
             try{
                 const response = await axios.post('/user/login',{username,password})
-                //如果用户不存在，返回400错误
                 if(response.status==400){
                     alert('User does not exist')
                     return
@@ -74,9 +76,12 @@ const store = createStore({
                         password:password,
                     }
                     localStorage.setItem('token',token)
+                    //const response2 = await axios.get('/room',username)
+                    //console.log('is  ',response2.data.rooms)
                     commit('setUser',user)
                     commit('setToken',token)
                     commit('setCurRoom','Hall')
+                    commit('setRooms',response.data.rooms)
                     socket.auth = {authorization: `Bearer ${token}`}
                     socket.connect()
                     alert('login success')
@@ -93,18 +98,45 @@ const store = createStore({
             socket.disconnect()
             localStorage.removeItem('token')
             commit('clearUser')
+            commit('setRooms',[])
             alert('log out success')
         },
+        async createRoom({commit,state},room){
+            try{
+                const res = await axios.post('/room/create',{room})
+                if(res){
+                    console.log('Room created successfully')
+                    this.joinRoom({commit,state},res.data.room)
+                    const response = await axios.get(`/room/${state.user.username}`)
+                    commit('setRooms',response.data.rooms) 
+                }
+                else{
+                    console.log('Room creation failed')
+                }
+            }
+            catch(error){
+                console.log(error)
+            }
+        },
         async joinRoom({commit,state},room){
-            if(!room||room.trim()==''){
-                console.log('room name is empty')
-                return
-            }
-            if(state.curRoom){
-                socket.emit('leaveRoom',state.curRoom)
-                console.log(`Left room:${state.curRoom}`)
-            }
-
+            try{
+                if(!room||room.trim()==''){
+                    console.log('room name is empty')
+                    return
+                }
+                await axios.post('/room/join',{username:state.user.username,room})
+                const response = await axios.get(`/room/${state.user.username}`)
+                    commit('setRooms',response.data.rooms)  
+            }      
+            catch(error){
+                console.log(error)
+            }         
+        },
+        async chooseRoom({commit,state},room){
+            socket.emit('leaveRoom',state.curRoom)
+            console.log(`Left room:${state.curRoom}`)
+            console.log(`Joining room:${room}`)
+    
             socket.emit('joinRoom',room,async ()=>{
                 console.log(`Joined room:${room}`)    
             })
@@ -112,11 +144,11 @@ const store = createStore({
             const response = await axios.get(`/messages/${room}`)
             //console.log(response.data.messages)
             commit('setCurRoom',room)
-            commit('setMessages',response.data.messages)        
+            commit('setMessages',response.data.messages)  
         },
-        leaveRoom({commit,state}){
-            socket.emit('leaveRoom',state.curRoom)
-            console.log(`Left room:${state.curRoom}`)
+        leaveRoom({commit,state},room){
+            socket.emit('leaveRoom',room)
+            console.log(`Left room:${room}`)
             commit('setCurRoom','Hall')
             commit('setMessages',[])
         },
@@ -163,10 +195,6 @@ socket.on('disConnect',()=>{
 
 socket.on('joinRoom',(room)=>{
     store.commit('joinRoom',room)
-})
-
-socket.on('leaveRoom',()=>{
-    store.commit('setRooms','')
 })
 
 socket.on('sendMessage',(msg)=>{

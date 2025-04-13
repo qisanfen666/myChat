@@ -16,17 +16,7 @@ $font-weight: 400;
     overflow:hidden;
 }
   
-// 左侧登录和注册部分
-.left-panel {
-    flex: 0.5; // 占据左侧一半
-    background-color: #f0f0f0;
-    overflow-y:auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+
 
 
 .form {
@@ -44,15 +34,39 @@ $font-weight: 400;
     font-size: 16px;
 }
 
-// 右侧消息部分
-.right-panel {
+// 左侧登录和注册部分
+.left-panel {
+    flex: 0.5; // 占据左侧一半
+    background-color: #f0f0f0;
+    overflow-y:auto;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+// 中间消息部分
+.center-panel {
     flex: 2; // 占据右侧两倍空间
     background-color: #fff;
-    padding: 20px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+//右侧列表部分
+.right-panel {
+    flex: 0.5; // 占据右侧一半
+    background-color: #f0f0f0;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items:flex-start;
+    align-items: center;
+    overflow-y:auto;
 }
 
 .message-box {
@@ -130,17 +144,33 @@ $font-weight: 400;
     display: flex;
     flex-direction: column;
     gap: 10px; // 选项之间的间距
-    margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    width: 100%; // 设置选项框的宽度
-    max-width: 400px;
+    width: 75%; // 设置选项框的宽度
+    //max-width: 400px;
     height: auto; // 设置选项框的高度
     overflow-y: auto; // 滚动条
     overflow-x: hidden; // 禁止横向滚动
     margin-bottom: 20px;   
+}
+
+.options button{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer; // 鼠标悬停时显示手型
+    transition: background-color 0.5s;
+}
+
+.options button:hover {
+    background-color: #e0e0e0; // 鼠标悬停时的背景色
 }
 
 //聊天气泡样式
@@ -187,4 +217,46 @@ $font-weight: 400;
     border-right: 10px solid #f0f0f0;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
+}
+
+
+
+// 右侧列表样式
+.list-item {
+    
+        width: 80%; // 列表项宽度
+        max-width: 400px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        
+}
+
+//列表内选项样式
+.list-item-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer; // 鼠标悬停时显示手型
+    transition: background-color 0.5s;
+}   
+
+.list-item-option:hover {
+    background-color: #e0e0e0; // 鼠标悬停时的背景色
+}
+
+
+.current-room{
+    background-color: #adacaf;
+    color: #fff;
+    border: 1px solid #939194;
+    cursor: default; // 鼠标悬停时不显示手型
+    pointer-events: none; // 禁用点击事件
 }

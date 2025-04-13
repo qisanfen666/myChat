@@ -48,6 +48,7 @@ export default defineComponent({
             messages,
             curRoom,
             messageListRef,
+            store,
         }
     },
     data() {
@@ -67,7 +68,7 @@ export default defineComponent({
         <li v-for="(message, index) in messages" 
         :key="index" 
         v-if="message.curRoom === curRoom.value"
-        :class="['chat-bubble', message.user === this.$store.state.user.username ? 'user' : 'bot']"
+        :class="['chat-bubble', message.user === this.store.state.user.username ? 'user' : 'bot']"
         >
             {{ message.user }} : {{ message.text }}
             <span>({{ message.timestamp }})</span>

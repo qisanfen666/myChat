@@ -33,6 +33,14 @@ if (token) {
     console.error('No token found in localStorage');
 }
 
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token')   // 从 localStorage 获取 token
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+})
+
 app.config.globalProperties.$socket = socket
 
 socket.on('connect',()=>{

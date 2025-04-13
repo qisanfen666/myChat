@@ -4,6 +4,7 @@ const cors = require('@koa/cors')
 const {bodyParser} = require('@koa/bodyparser')
 const userRouters = require('./routers/userRouters.cjs')
 const messageRouters = require('./routers/messageRouters.cjs')
+const roomRouters = require('./routers/roomRouters.cjs')
 const socketIo = require('socket.io')
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = 'mySecretKey@123'
@@ -25,6 +26,7 @@ app.use(bodyParser())
 //allowedMethods是允许客户端发送请求的方法，这里设置为GET和POST
 app.use(userRouters.routes()).use(userRouters.allowedMethods())
 app.use(messageRouters.routes()).use(messageRouters.allowedMethods())
+app.use(roomRouters.routes()).use(roomRouters.allowedMethods())
 
 const server = http.createServer(app.callback())
 

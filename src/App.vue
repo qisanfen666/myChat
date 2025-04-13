@@ -6,6 +6,8 @@ import userLogout from './components/userLogout.vue'
 import joinRoom from './components/joinRoom.vue'
 import userLogin from './components/userLogin.vue'
 import userRegister from './components/userRegister.vue'
+import chatList from './components/chatList.vue'
+import createRoom from './components/createRoom.vue'
 import { useStore } from 'vuex'
 
   export default defineComponent({
@@ -28,6 +30,8 @@ import { useStore } from 'vuex'
       userLogin,
       userRegister,
       userLogout,
+      chatList,
+      createRoom,
     }, 
     created(){
       this.$socket.on('connect',()=>{
@@ -44,13 +48,12 @@ import { useStore } from 'vuex'
 <div id="app" class="page">
   <!--左侧-->
   <div class="left-panel">
-    <div v-if="!selectedOption" class="container">
-      <h2 class="header">Options</h2>
-      <div class="options">
-        <button @click="selectedOption = 'register'">Register</button>
-        <button @click="selectedOption = 'login'">Login</button>
-        <button @click="selectedOption = 'joinRoom'">Join Room</button>
-      </div>
+    <h2 class="header">Options</h2>
+    <div class="options" v-if="!selectedOption">
+      <button @click="selectedOption = 'register'">Register</button>
+      <button @click="selectedOption = 'login'">Login</button>
+      <button @click="selectedOption = 'createRoom'">Create Room</button>
+      <button @click="selectedOption = 'joinRoom'">Join Room</button>
     </div>
     <div class="container" v-show="selectedOption === 'register'">
       <userRegister></userRegister>
@@ -68,11 +71,17 @@ import { useStore } from 'vuex'
       <joinRoom></joinRoom>
       <button @click="selectedOption = null">Back</button>  
     </div>
+    <br>
+    <div class="container" v-show="selectedOption === 'createRoom'">
+      <createRoom></createRoom>
+      <button @click="selectedOption = null">Back</button>
+    </div>
+
   </div>
 
-  <!--右侧-->
-  <div class="right-panel">
-    <h2 class="head">Chat Room</h2>
+  <!--中间-->
+  <div class="center-panel">
+    <h2 class="header">Chat Room</h2>
     <div class="message-box chat-container">
       <messageList></messageList>
     </div>
@@ -80,6 +89,11 @@ import { useStore } from 'vuex'
       <sendMessage></sendMessage>
     </div>
   </div>
+
+  <!--右侧-->
+  <div class="right-panel">
+    <chatList></chatList>
+  </div> 
 </div>
 </template>
 
