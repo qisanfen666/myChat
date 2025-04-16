@@ -67,6 +67,7 @@ const store = createStore({
                 const response = await axios.post('/user/login',{username,password})
                 if(response.status==400){
                     alert('User does not exist')
+                    location.reload()
                     return
                 }
                 if(response.data.token){
@@ -101,12 +102,12 @@ const store = createStore({
             commit('setRooms',[])
             alert('log out success')
         },
-        async createRoom({commit,state},room){
+        async createRoom({commit,state},{room,password}){
             try{
-                const res = await axios.post('/room/create',{room})
+                console.log(password)
+                const res = await axios.post('/room/create',{room:room,password:password})
                 if(res){
                     console.log('Room created successfully')
-                    this.joinRoom({commit,state},res.data.room)
                     const response = await axios.get(`/room/${state.user.username}`)
                     commit('setRooms',response.data.rooms) 
                 }
@@ -118,15 +119,24 @@ const store = createStore({
                 console.log(error)
             }
         },
-        async joinRoom({commit,state},room){
-            try{
-                if(!room||room.trim()==''){
-                    console.log('room name is empty')
+        async joinRoom({commit,state},{room,password}){
+            try{ 
+                await axios.post('/room/join',{username:state.user.username,room:room,password:password})
+                const response = await axios.get(`/room/${state.user.username}`)
+                if(response.status==400){
+                    alert('User already in room')
                     return
                 }
-                await axios.post('/room/join',{username:state.user.username,room})
-                const response = await axios.get(`/room/${state.user.username}`)
-                    commit('setRooms',response.data.rooms)  
+                if(response.status==401){
+                    alert('Room does not exist')
+                    return
+                }
+                if(response.status==403){
+                    alert('Wrong password')
+                    return
+                }
+                           
+                commit('setRooms',response.data.rooms)  
             }      
             catch(error){
                 console.log(error)
@@ -141,7 +151,10 @@ const store = createStore({
                 console.log(`Joined room:${room}`)    
             })
 
-            const response = await axios.get(`/messages/${room}`)
+            const response = await axios.get(`/message/${room}`)
+            console.log(response.status)
+            console.log(response.data.messages)
+           
             //console.log(response.data.messages)
             commit('setCurRoom',room)
             commit('setMessages',response.data.messages)  
@@ -168,7 +181,7 @@ const store = createStore({
                 timestamp:new Date().toLocaleString()
             }
 
-            axios.post(`/messages`,message)
+            axios.post(`/message`,message)
 
             socket.emit('sendMessage',message)
         },

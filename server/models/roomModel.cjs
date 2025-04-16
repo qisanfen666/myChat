@@ -1,16 +1,30 @@
 const pool =require('../utils/db.cjs')
+const bcrypt = require('bcrypt')
 
-const createRoom = async (room)=>{
-    if(!room){
+const createRoom = async (room,password)=>{
+    if(!room||!password){
         return
     }
     try{
-        const sql = `INSERT INTO rooms (name) VALUES (?);`
-        const result = await pool.query(sql,[room])
+        const hashedPassword = await bcrypt.hash(password,10)
+        const sql = `INSERT INTO rooms (name,password) VALUES (?,?);`
+        const result = await pool.query(sql,[room,hashedPassword])
         return result
     }
     catch(err){
         console.log('createRoom error : ',err)
+        throw err
+    }
+}
+
+const getRoom = async (room)=>{
+    try{
+        const sql = `SELECT * FROM rooms WHERE name = ?;`
+        const result = await pool.query(sql,[room])
+        return result[0][0]
+    }
+    catch(err){
+        console.log('getRoom error : ',err)
         throw err
     }
 }
@@ -46,4 +60,5 @@ module.exports = {
     setUserRooms,
     isInRoom,
     createRoom,
+    getRoom,
 }

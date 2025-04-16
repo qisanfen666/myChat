@@ -10,8 +10,8 @@ const jwt = require('jsonwebtoken')
 const SECRET_KEY = 'mySecretKey@123'
 
 //http://localhost:5173
-let hostname= '127.0.0.1'
-let port = 3000
+const hostname= '127.0.0.1'
+const port = 3000
 let app = new koa()
 
 app.use(cors({

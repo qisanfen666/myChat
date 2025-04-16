@@ -27,7 +27,6 @@ export default defineComponent({
 </script>
 
 <template>
-    <button @click="console.log(rooms,this.store.state.rooms)">Check Rooms</button>
     <h2 class="header">Chat List</h2>
     <ul class="list-item">
         <li  class="list-item-option" v-for="(room, index) in rooms" :key="index" @click="chooseRoom

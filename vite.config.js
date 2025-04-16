@@ -6,6 +6,9 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // server:{
+  //   hmr:false,
+  // },
   plugins: [
     vue(),
     vueDevTools(),

@@ -18,6 +18,7 @@ const getMessagesByRoomController = async(ctx)=>{
     try{
         const messages = await getMessagesByRoom(room)
         ctx.status = 200
+        console.log(messages)
         //console.log(messages)
         ctx.body = {messages}
     }

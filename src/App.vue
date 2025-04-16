@@ -2,7 +2,6 @@
 import { defineComponent } from 'vue'
 import sendMessage from './components/sendMessage.vue'
 import messageList from './components/messageList.vue'
-import userLogout from './components/userLogout.vue'
 import joinRoom from './components/joinRoom.vue'
 import userLogin from './components/userLogin.vue'
 import userRegister from './components/userRegister.vue'
@@ -29,7 +28,6 @@ import { useStore } from 'vuex'
       joinRoom,
       userLogin,
       userRegister,
-      userLogout,
       chatList,
       createRoom,
     }, 
@@ -98,6 +96,6 @@ import { useStore } from 'vuex'
 </template>
 
 <style lang="scss">
-@import './assets/page.scss';
-@import './assets/base.scss';
+@use './assets/page.scss';
+@use './assets/base.scss';
 </style>
