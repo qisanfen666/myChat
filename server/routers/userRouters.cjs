@@ -4,6 +4,7 @@ const {registerUser,loginUser} = require('../controllers/userController.cjs')
 
 const router = new Router({prefix:'/user'})
 
+//登录和注册不需要验证token
 router.post('/register',registerUser)
 router.post('/login',loginUser)
 

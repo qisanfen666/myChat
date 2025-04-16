@@ -1,6 +1,7 @@
 const pool =require('../utils/db.cjs')
 const bcrypt = require('bcrypt')
 
+//创建房间的函数
 const createRoom = async (room,password)=>{
     if(!room||!password){
         return
@@ -17,6 +18,7 @@ const createRoom = async (room,password)=>{
     }
 }
 
+//获取房间的函数
 const getRoom = async (room)=>{
     try{
         const sql = `SELECT * FROM rooms WHERE name = ?;`
@@ -29,6 +31,7 @@ const getRoom = async (room)=>{
     }
 }
 
+//检查用户是否在房间的函数
 const isInRoom = async (username,room)=>{
     try{
         const sql = `SELECT * FROM user_rooms WHERE user_id = (SELECT id FROM users WHERE username = ?) AND room_id = (SELECT id FROM rooms WHERE name = ?);`
@@ -39,6 +42,8 @@ const isInRoom = async (username,room)=>{
         return false
     }
 }
+
+//将用户加入房间的函数
 const setUserRooms = async (username,room)=>{
     try{
         const sql1 = `SELECT id FROM users WHERE username = ?;`

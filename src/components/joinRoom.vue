@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+    //加入房间
     name:'joinRoom',
     
     setup(){

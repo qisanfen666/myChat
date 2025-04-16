@@ -5,6 +5,7 @@ const { setUserRooms,isInRoom,createRoom,getRoom } = require('../models/roomMode
 const { getUserRooms } = require('../models/userModel.cjs')
 const { saveMessage } = require('../models/messageModel.cjs')
 
+//创建房间并加入数据库
 const createRoomController = async (ctx)=>{
     const {room,password} = ctx.request.body
     try{
@@ -27,6 +28,7 @@ const createRoomController = async (ctx)=>{
     }
 }
 
+//加入房间
 const joinRoomController = async (ctx)=>{
     const {username,room,password} = ctx.request.body
 
@@ -66,6 +68,7 @@ const joinRoomController = async (ctx)=>{
     }
 }
 
+//获取用户的房间信息
 const getUserRoomsController = (async(ctx)=>{
     const {username} = ctx.params
     try{

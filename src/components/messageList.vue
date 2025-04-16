@@ -4,6 +4,7 @@ import { computed,onMounted,ref,watch,nextTick } from 'vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+    //消息列表
     name:'MessageList',
 
     setup(){

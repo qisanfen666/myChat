@@ -5,6 +5,7 @@ import axios from 'axios'
 const socket = io('http://localhost:3000')
 
 const store = createStore({
+    //Vuex的状态管理
     state:{
         socketConnected:false,
         curRoomUserCount:0,
@@ -14,7 +15,7 @@ const store = createStore({
         user:null,
         token:null,
     },
-
+    //用于修改状态的函数
     mutations:{
         socketConnected(state){
             state.socketConnected = true

@@ -1,5 +1,6 @@
 const pool = require('../utils/db.cjs')
 
+//保存消息到数据库的函数
 const saveMessage = async (room,user,text)=>{
     const sql ='INSERT INTO messages (room,user,text) VALUES (?,?,?);'
     try{
@@ -10,6 +11,7 @@ const saveMessage = async (room,user,text)=>{
     }
 }
 
+//根据房间号获取消息的函数
 const getMessagesByRoom =async (room)=>{
     const sql = 'SELECT * FROM messages WHERE room = ?;'
     try{

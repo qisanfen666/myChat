@@ -3,6 +3,7 @@ import { useStore } from 'vuex';
 import { defineComponent } from 'vue';
 
 export default defineComponent ({
+  //发送消息
     name:'sendMessage',
 
     setup(){

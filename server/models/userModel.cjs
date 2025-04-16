@@ -1,6 +1,7 @@
 const pool = require('../utils/db.cjs')
 const bcrypt = require('bcrypt')
 
+//创建用户的函数
 const createUser = async (username,password)=>{
     try{
         const hashedPassword = await bcrypt.hash(password,10)
@@ -14,6 +15,7 @@ const createUser = async (username,password)=>{
     }
 }
 
+//获取用户的函数
 const getUser = async (username)=>{
     try{
         const sql = `SELECT * FROM users WHERE username = ? ;`
@@ -26,7 +28,7 @@ const getUser = async (username)=>{
     }
 }
 
-
+//获取用户加入的房间的函数
 const getUserRooms = async (username)=>{
     try{
         const sql1 = `SELECT room_id FROM user_rooms Where user_id = (SELECT id FROM users WHERE username= ?);`

@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+    //创建房间
     name:'createRoom',
 
     setup(){

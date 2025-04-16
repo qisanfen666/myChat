@@ -1,5 +1,6 @@
 const { saveMessage, getMessagesByRoom } = require('../models/messageModel.cjs')
 
+//保存消息到数据库
 const saveMessageConttoller = async(ctx)=>{
     const {curRoom,user,text} = ctx.request.body
     try{
@@ -13,6 +14,7 @@ const saveMessageConttoller = async(ctx)=>{
     }
 }
 
+//获取指定房间的消息
 const getMessagesByRoomController = async(ctx)=>{
     const {room} = ctx.params
     try{

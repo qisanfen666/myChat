@@ -41,6 +41,7 @@ axios.interceptors.request.use((config) => {
     return config
 })
 
+//设置全局变量
 app.config.globalProperties.$socket = socket
 
 socket.on('connect',()=>{

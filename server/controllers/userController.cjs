@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const SECRET_KEY = 'mySecretKey@123'
 const {createUser,getUser,getUserRooms} = require('../models/userModel.cjs')
 
+//创建用户并加入数据库
 const registerUser = (async ctx=>{
     const {username,password} = ctx.request.body
 
@@ -23,6 +24,7 @@ const registerUser = (async ctx=>{
     }
 })
 
+//登录用户并返回token
 const loginUser = (async ctx=>{
     const {username,password} = ctx.request.body 
     try{

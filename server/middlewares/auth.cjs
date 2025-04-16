@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = 'mySecretKey@123'
 
+
+//中间件函数，用于验证用户身份
 const authenticate = (async (ctx, next)=>{
     const header =ctx.headers.authorization
     const token =header.split(' ')[1]

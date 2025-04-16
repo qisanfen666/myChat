@@ -3,6 +3,9 @@ import axios from 'axios'
 import {defineComponent} from 'vue'
 
 export default defineComponent({
+    //注册界面
+    name:'userRegister',
+    
     data(){
         return{
             username:'',
