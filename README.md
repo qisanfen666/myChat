@@ -11,16 +11,16 @@
 ​	本项目是一个**线上实时聊天室**,目前只做了很基本的功能:
 
 - 创建用户
-![1](public/1.png)
+- ![1](public/1.png)
 - 用户登录
-![2](public/2.png)
+- ![2](public/2.png)
 - 创建聊天室
-![3](punlic/3.png)
+- ![3](public/3.png)
 - 加入自己或者他人的聊天室
-![4](public/4.png)
-![5](public/5.png)
+- ![4](public/4.png)
+- ![5](public/5.png)
 - 线上实时聊天
-![6](public/6.png)
+- ![6](public/6.png)
 
 其余各种功能添加和优化之后有机会就找时间开工,现在课业有点繁重.
 
